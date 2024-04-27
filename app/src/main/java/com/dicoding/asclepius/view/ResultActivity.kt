@@ -8,11 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.data.database.AppDatabase
 import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.dicoding.asclepius.databinding.ActivityResultBinding
+import com.dicoding.asclepius.view.home.adapter.AdapterBeritaKesehatan
+import com.dicoding.asclepius.view.home.viewmodel.HealthNewsViewModel
 import com.dicoding.asclepius.view.util.ImageUtils
 
 inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
@@ -27,7 +32,8 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
 class ResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultBinding
     private lateinit var database: AppDatabase
-
+    private lateinit var viewModel: HealthNewsViewModel
+    private lateinit var adapter: AdapterBeritaKesehatan
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultBinding.inflate(layoutInflater)
@@ -37,6 +43,18 @@ class ResultActivity : AppCompatActivity() {
 
         // TODO: Menampilkan hasil gambar, prediksi, dan confidence score.
         displayImageAndResults()
+
+        binding!!.idRecRefferensi.layoutManager = LinearLayoutManager(applicationContext)
+        adapter = AdapterBeritaKesehatan(emptyList(), onItemClick = this::onItemClick)
+        binding!!.idRecRefferensi.adapter = adapter
+        viewModel.articles.observe(this, Observer { articles ->
+            Toast.makeText(this, "Data loaded: ${articles.size}", Toast.LENGTH_SHORT).show()
+            adapter.updateData(articles) // Pastikan adapter Anda memiliki metode untuk mengupdate datanya
+        })
+        viewModel.fetchArticles()
+
+    }
+    private fun onItemClick(s: String) {
 
     }
 

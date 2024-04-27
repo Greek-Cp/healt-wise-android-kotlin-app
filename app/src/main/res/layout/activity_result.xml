@@ -101,7 +101,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_riwayat_scan"
             app:layout_constraintTop_toBottomOf="@+id/id_tv_refferensi_penyakit" />
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tv_descPenjelasan_refferensi"
+            android:id="@+id/id_rec_refferensi"
             style="@style/DescriptionStyleBig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
