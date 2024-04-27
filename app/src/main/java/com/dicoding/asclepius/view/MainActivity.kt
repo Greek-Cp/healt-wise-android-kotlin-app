@@ -3,6 +3,7 @@ package com.dicoding.asclepius.view
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.dicoding.asclepius.data.database.AppDatabase
 import com.dicoding.asclepius.data.model.PredictionModel
 import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.dicoding.asclepius.helper.ImageClassifierHelper
+import com.dicoding.asclepius.view.util.ImageUtils
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.support.label.Category
 import java.text.SimpleDateFormat
@@ -34,11 +36,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         database = AppDatabase.getDatabase(this)
-
         classifierHelper = ImageClassifierHelper(this)
 
         binding.galleryButton.setOnClickListener {
@@ -94,19 +94,23 @@ class MainActivity : AppCompatActivity() {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             dateFormat.format(Date())
         }
+
         val intent = Intent(this, ResultActivity::class.java)
         currentImageUri?.let {
             intent.putExtra("ImageUri", it) // Directly pass the Uri
         }
-
+        val bitmapImage = ImageUtils.uriToBitmap(this,currentImageUri!!);
+        val imageBytes = ImageUtils.bitmapToByteArray(bitmapImage!!);
         // Assuming predictions are available and you have methods to get readable strings from them
         val predictionsText = predictions.joinToString(", ") { "${it.label}" }
         val confidenceScores = predictions.joinToString(", ") { "${it.score * 100}"}
         intent.putExtra("Timestamp", formattedDateTime) // Pass the timestamp to the ResultActivity
         intent.putExtra("PredictionResults", predictionsText)
         intent.putExtra("ConfidenceScores", confidenceScores.toDouble()) // Adjust this according to actual data availability
+        intent.putExtra("fromPage","PageAnalyze")
+
         if (predictionsText != null && formattedDateTime != null) {
-            val prediction = PredictionModel(timestamp = formattedDateTime, predictionResults = predictionsText, confidenceScores = confidenceScores.toDouble())
+            val prediction = PredictionModel(timestamp = formattedDateTime, predictionResults = predictionsText, confidenceScores = confidenceScores.toDouble(), imagePrediction = imageBytes)
             lifecycleScope.launch {
                 database.predictionDao().insert(prediction)
             }
@@ -114,6 +118,7 @@ class MainActivity : AppCompatActivity() {
 
         startActivity(intent)
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

@@ -10,8 +10,11 @@ import android.os.Parcelable
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.dicoding.asclepius.R
+import com.dicoding.asclepius.data.database.AppDatabase
 import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.dicoding.asclepius.databinding.ActivityResultBinding
+import com.dicoding.asclepius.view.util.ImageUtils
+
 inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
     SDK_INT >= 34 -> getParcelableExtra(key, T::class.java)
     else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
@@ -23,12 +26,14 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
 }
 class ResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultBinding
+    private lateinit var database: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+        database = AppDatabase.getDatabase(this)
 
         // TODO: Menampilkan hasil gambar, prediksi, dan confidence score.
         displayImageAndResults()
@@ -39,19 +44,41 @@ class ResultActivity : AppCompatActivity() {
     private fun displayImageAndResults() {
         // Retrieve the URI and display it in the ImageView
         val imageUri: Uri? = intent.parcelable("ImageUri")
+        val fromPage: String? = intent.getStringExtra("fromPage")?.toString();
+        val predictionId = intent.getIntExtra("prediction_id", 0)
+        if(fromPage == "PageAnalyze"){
+            database.predictionDao().getPredictionById(predictionId).observe(this, { prediction ->
+                // Update other UI elements as needed
+                imageUri?.let {
+                    val bitmapImage = ImageUtils.uriToBitmap(applicationContext,imageUri);
+                    binding.resultImage.setImageBitmap(bitmapImage)
+                } ?: Toast.makeText(this, "No Image Found", Toast.LENGTH_SHORT).show()
 
-        imageUri?.let {
-            binding.resultImage.setImageURI(it)
-        } ?: Toast.makeText(this, "No Image Found", Toast.LENGTH_SHORT).show()
+                // Retrieve the prediction results and confidence scores
+                val predictions: String? = intent.getStringExtra("PredictionResults")
+                val confidence: Double? = intent.getDoubleExtra("ConfidenceScores",0.0);
+                // Update the TextView with the prediction results and confidence scores
+                binding.resultText.text = "Results: $predictions\nConfidence: ${confidence.toString()}"
+                setCardColorBasedOnPrediction(predictions)
+                setExplanationBasedOnConfidence(confidence!!,predictions)
 
-        // Retrieve the prediction results and confidence scores
-        val predictions: String? = intent.getStringExtra("PredictionResults")
-        val confidence: Double? = intent.getDoubleExtra("ConfidenceScores",0.0);
+            })
+        } else{
+            database.predictionDao().getPredictionById(predictionId).observe(this, { prediction ->
+                // Update other UI elements as needed
+                    val bitmapImage = ImageUtils.byteArrayToBitmap(prediction.imagePrediction!!)
+                    binding.resultImage.setImageBitmap(bitmapImage)
+                // Retrieve the prediction results and confidence scores
+                val predictions: String? = prediction.predictionResults
+                val confidence: Double? = prediction.confidenceScores
+                // Update the TextView with the prediction results and confidence scores
+                binding.resultText.text = "Results: $predictions\nConfidence: ${confidence.toString()}"
+                setCardColorBasedOnPrediction(predictions)
+                setExplanationBasedOnConfidence(confidence!!,predictions)
 
-        // Update the TextView with the prediction results and confidence scores
-        binding.resultText.text = "Results: $predictions\nConfidence: ${confidence.toString()}"
-        setCardColorBasedOnPrediction(predictions)
-        setExplanationBasedOnConfidence(confidence!!,predictions)
+            })
+
+        }
 
     }
     private fun setCardColorBasedOnPrediction(predictions: String?) {
