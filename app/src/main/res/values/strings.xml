@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Asclepius</string>
+    <string name="app_name">Health Wise</string>
     <string name="camera_x">CameraX</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
@@ -10,7 +10,7 @@
     <string name="healt_wise">Health Wise</string>
     <string name="cari_tau_jenis_kanker_melalui_kamera">Deteksi Dini Kanker Kulit, Mulai Sekarang Lewat Ponsel Anda!</string>
     <string name="riwayat_scan">Riwayat Scan</string>
-    <string name="refferensi">Refferensi</string>
+    <string name="refferensi">Berita Kesehatan</string>
     <string name="penjelasan">Penjelasan</string>
     <string name="berita_kesehatan">Berita Kesehatan\n</string>
     <string name="home_user">Home\n</string>

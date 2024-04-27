@@ -97,7 +97,7 @@
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:background="@color/md_theme_dark_inversePrimary"
-            app:layout_constraintEnd_toEndOf="@+id/tv_riwayat_scan"
+            app:layout_constraintEnd_toEndOf="@+id/id_tv_refferensi_penyakit"
             app:layout_constraintStart_toStartOf="@+id/tv_riwayat_scan"
             app:layout_constraintTop_toBottomOf="@+id/id_tv_refferensi_penyakit" />
         <androidx.recyclerview.widget.RecyclerView
