@@ -11,6 +11,8 @@ import androidx.lifecycle.asLiveData
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.databinding.ActivityNavBinding
 import com.dicoding.asclepius.view.MainActivity
+import com.dicoding.asclepius.view.healt.FragmentHealthNews
+import com.dicoding.asclepius.view.home.FragmentHome
 import dataStore
 
 class NavActivity : AppCompatActivity() {
@@ -36,10 +38,30 @@ class NavActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(mode)
         })
 
-        binding.customBottomBar.menu.getItem(1).isEnabled = false
+        binding.idNavMain.menu.getItem(1).isEnabled = false
         binding.idBtnScan.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
-
+        }
+        binding.idNavMain.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home_user -> {
+                    // Navigate to FragmentHome
+                    val fragment = FragmentHome()
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.fragment_container, fragment)
+                    transaction.commit()
+                    true
+                }
+                R.id.nav_berita_user -> {
+                    // Navigate to FragmentHealthNews
+                    val fragment = FragmentHealthNews()
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.fragment_container, fragment)
+                    transaction.commit()
+                    true
+                }
+                else -> false
+            }
         }
     }
 }

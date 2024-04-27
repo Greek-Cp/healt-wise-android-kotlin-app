@@ -15,4 +15,6 @@
     <string name="berita_kesehatan">Berita Kesehatan\n</string>
     <string name="home_user">Home\n</string>
     <string name="avatar">loading\n</string>
+    <string name="yuk_cari_berita_terkait_kesehatan">Yuk cari berita terkait kesehatan</string>
+    <string name="berita_kesehatan_header">Berita Kesehatan</string>
 </resources>

@@ -9,7 +9,7 @@
         android:id="@+id/placeholder"
         android:title="" />
     <item
-        android:id="@+id/nav_fav_user"
+        android:id="@+id/nav_berita_user"
         android:icon="@drawable/ic_nav_news_healt"
         android:title="@string/berita_kesehatan" />
 </menu>

@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
       />
     <com.dicoding.asclepius.view.nav.custom_view.CustomNavBottom
-        android:id="@+id/customBottomBar"
+        android:id="@+id/id_nav_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -37,7 +37,7 @@
         app:shapeAppearance="?shapeAppearanceCornerExtraLarge"
         app:layout_anchorGravity="center_horizontal"
         android:layout_marginBottom="30dp"
-        app:layout_anchor="@id/customBottomBar"
+        app:layout_anchor="@id/id_nav_main"
         android:layout_centerHorizontal="true"
         app:maxImageSize="60dp"
 

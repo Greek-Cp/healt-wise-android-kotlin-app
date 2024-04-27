@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/AppTheme"
+    tools:context=".view.healt.FragmentHealthNews">
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+
+
+        <TextView
+            android:id="@+id/tv_desc"
+            style="@style/DescriptionStyleBig"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:layout_marginTop="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="20dp"
+            android:text="@string/yuk_cari_berita_terkait_kesehatan"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_riwayat_scan"
+            style="@style/HeaderStyleBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/berita_kesehatan_header"
+            app:layout_constraintStart_toStartOf="@+id/tv_desc"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:background="@color/md_theme_dark_inversePrimary"
+            android:layout_height="4dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_riwayat_scan"
+            app:layout_constraintStart_toStartOf="@+id/tv_riwayat_scan"
+            app:layout_constraintTop_toBottomOf="@+id/tv_riwayat_scan" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/id_rec_user"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:paddingBottom="60dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            tools:itemCount="13"
+            tools:listitem="@layout/item_user" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
