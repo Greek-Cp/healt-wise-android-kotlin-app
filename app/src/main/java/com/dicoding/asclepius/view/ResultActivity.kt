@@ -47,11 +47,9 @@ class ResultActivity : AppCompatActivity() {
         val fromPage: String? = intent.getStringExtra("fromPage")?.toString();
         val predictionId = intent.getIntExtra("prediction_id", 0)
         if(fromPage == "PageAnalyze"){
-            database.predictionDao().getPredictionById(predictionId).observe(this, { prediction ->
-                // Update other UI elements as needed
+
                 imageUri?.let {
-                    val bitmapImage = ImageUtils.uriToBitmap(applicationContext,imageUri);
-                    binding.resultImage.setImageBitmap(bitmapImage)
+                    binding.resultImage.setImageURI(it)
                 } ?: Toast.makeText(this, "No Image Found", Toast.LENGTH_SHORT).show()
 
                 // Retrieve the prediction results and confidence scores
@@ -62,7 +60,7 @@ class ResultActivity : AppCompatActivity() {
                 setCardColorBasedOnPrediction(predictions)
                 setExplanationBasedOnConfidence(confidence!!,predictions)
 
-            })
+
         } else{
             database.predictionDao().getPredictionById(predictionId).observe(this, { prediction ->
                 // Update other UI elements as needed

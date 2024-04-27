@@ -17,7 +17,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="120dp"
             >
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -31,19 +31,29 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvStatusDeteksi"
-                style="@style/HeaderStyleMedium"
-                android:text="Nama Penyakit"
-                android:layout_width="0dp"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/id_card_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/id_img_scan"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/id_img_scan" />
+                app:layout_constraintTop_toTopOf="@+id/id_img_scan">
 
+                <TextView
+                    android:id="@+id/tvStatusDeteksi"
+                    style="@style/HeaderStyleMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Nama Penyakit"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/id_img_scan"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/id_img_scan" />
+
+
+            </com.google.android.material.card.MaterialCardView>
 
 
             <TextView
@@ -51,11 +61,22 @@
                 style="@style/DescriptionStyleMedium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/tvStatusDeteksi"
-                app:layout_constraintStart_toStartOf="@+id/tvStatusDeteksi"
-                app:layout_constraintTop_toBottomOf="@+id/tvStatusDeteksi" />
+                android:layout_marginTop="5dp"
+                android:maxLines="4"
+                app:layout_constraintEnd_toStartOf="@+id/id_img_scan"
+                app:layout_constraintStart_toStartOf="@+id/id_card_status"
+                app:layout_constraintTop_toBottomOf="@+id/id_card_status" />
 
+            <TextView
+                android:id="@+id/id_tv_waktu"
+                style="@style/DescriptionStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="datetime"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/id_img_scan"
+                app:layout_constraintStart_toStartOf="@+id/id_tv_status_penjelasan" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
