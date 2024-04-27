@@ -1,20 +1,17 @@
 package com.dicoding.asclepius.view.healt
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.asclepius.R
 import com.dicoding.asclepius.databinding.FragmentHealthNewsBinding
-import com.dicoding.asclepius.databinding.FragmentHomeBinding
 import com.dicoding.asclepius.view.home.adapter.AdapterBeritaKesehatan
-import com.dicoding.asclepius.view.home.adapter.AdapterRiwayatScan
 import com.dicoding.asclepius.view.home.viewmodel.HealthNewsViewModel
+import com.dicoding.asclepius.view.util.openWebPage
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,9 +44,7 @@ class FragmentHealthNews : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentHealthNewsBinding.inflate(inflater,container,false)
-
         return binding?.root
     }
 
@@ -61,18 +56,16 @@ class FragmentHealthNews : Fragment() {
         _binding!!.idRecUser.adapter = adapter
 
         viewModel.articles.observe(viewLifecycleOwner, Observer { articles ->
-            Toast.makeText(requireContext(), "Data loaded: ${articles.size}", Toast.LENGTH_SHORT).show()
-            adapter.updateData(articles) // Pastikan adapter Anda memiliki metode untuk mengupdate datanya
+            adapter.updateData(articles)
         })
-        viewModel.fetchArticles()
+        viewModel.fetchArticles("id","health")
 
 
     }
 
-    private fun onItemClick(s: String) {
-
+    private fun onItemClick(url: String) {
+        openWebPage(requireContext(),url)
     }
-
     companion object {
         /**
          * Use this factory method to create a new instance of

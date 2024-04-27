@@ -1,13 +1,11 @@
 package com.dicoding.asclepius.view.home.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.data.model.PredictionModel
@@ -18,9 +16,9 @@ import com.google.android.material.card.MaterialCardView
 class AdapterRiwayatScan(private var predictions: List<PredictionModel>, private val onItemClick: (String) -> Unit) : RecyclerView.Adapter<AdapterRiwayatScan.ViewHolder>() {
     private fun setCardColorBasedOnPrediction(predictions: String?, itemView: View) {
         val colorRes = if (predictions?.equals("Cancer", ignoreCase = true) == true) {
-            R.color.colorForCancer // Define this color in your colors.xml as #C32BA2
+            R.color.colorForCancer
         } else {
-            R.color.colorForNonCancer // Define this color in your colors.xml as #2bc3a7
+            R.color.colorForNonCancer
         }
         itemView.findViewById<MaterialCardView>(R.id.id_card_status).setCardBackgroundColor(ContextCompat.getColor(itemView.context, colorRes))
     }
@@ -126,21 +124,6 @@ class AdapterRiwayatScan(private var predictions: List<PredictionModel>, private
             imageView.setImageBitmap(ImageUtils.byteArrayToBitmap(item.imagePrediction!!))
             val tv_waktu = itemView.findViewById<TextView>(R.id.id_tv_waktu);
             tv_waktu.setText(item.timestamp)
-//            val shimmer = Shimmer.AlphaHighlightBuilder()
-//                .setDuration(1800)
-//                .setBaseAlpha(0.7f)
-//                .setHighlightAlpha(0.6f)
-//                .setDirection(Shimmer.Direction.RIGHT_TO_LEFT)
-//                .setAutoStart(true)
-//                .build()
-//            val shimmerDrawable = ShimmerDrawable().apply {
-//                setShimmer(shimmer)
-//            }
-//            Glide.with(itemView.context)
-//                .load(item.avatarUrl)
-//                .placeholder(shimmerDrawable)
-//                .into(imageView)
-
             itemView.setOnClickListener {
                 if (selectedPosition != adapterPosition) {
                     notifyItemChanged(selectedPosition)
@@ -162,7 +145,6 @@ class AdapterRiwayatScan(private var predictions: List<PredictionModel>, private
     }
     override fun getItemCount(): Int = predictions.size
     fun updatepredictions(newpredictions: List<PredictionModel>) {
-        Log.d("update", "Update predictions")
         this.predictions = newpredictions
         notifyDataSetChanged()
     }

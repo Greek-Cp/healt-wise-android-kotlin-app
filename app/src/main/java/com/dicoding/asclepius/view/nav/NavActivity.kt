@@ -1,5 +1,6 @@
 package com.dicoding.asclepius.view.nav
 
+import SettingAppPreferences
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -45,7 +46,6 @@ class NavActivity : AppCompatActivity() {
         binding.idNavMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home_user -> {
-                    // Navigate to FragmentHome
                     val fragment = FragmentHome()
                     val transaction = supportFragmentManager.beginTransaction()
                     transaction.replace(R.id.fragment_container, fragment)
@@ -53,7 +53,6 @@ class NavActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_berita_user -> {
-                    // Navigate to FragmentHealthNews
                     val fragment = FragmentHealthNews()
                     val transaction = supportFragmentManager.beginTransaction()
                     transaction.replace(R.id.fragment_container, fragment)
@@ -64,4 +63,5 @@ class NavActivity : AppCompatActivity() {
             }
         }
     }
+
 }

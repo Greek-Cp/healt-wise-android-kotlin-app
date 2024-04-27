@@ -1,28 +1,25 @@
 package com.dicoding.asclepius.view.nav.custom_view
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Point
 import android.util.AttributeSet
+import androidx.core.content.ContextCompat
+import com.dicoding.asclepius.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CustomNavBottom : BottomNavigationView {
     private var mPath: Path? = null
     private var mPaint: Paint? = null
-
-    /** the CURVE_CIRCLE_RADIUS represent the radius of the fab button  */
     val CURVE_CIRCLE_RADIUS = 256 / 3
-
-    // the coordinates of the first curve
     var mFirstCurveStartPoint = Point()
     var mFirstCurveEndPoint = Point()
     var mFirstCurveControlPoint2 = Point()
     var mFirstCurveControlPoint1 = Point()
-
-    //the coordinates of the second curve
     var mSecondCurveStartPoint = Point()
     var mSecondCurveEndPoint = Point()
     var mSecondCurveControlPoint1 = Point()
@@ -33,16 +30,10 @@ class CustomNavBottom : BottomNavigationView {
     constructor(context: Context?) : super(context!!) {
         init()
     }
-
-    constructor(context: Context?, attrs: AttributeSet?) : super(
-        context!!, attrs
-    ) {
+    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
         init()
     }
-
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context!!, attrs, defStyleAttr
-    ) {
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr) {
         init()
     }
 
@@ -50,33 +41,31 @@ class CustomNavBottom : BottomNavigationView {
         mPath = Path()
         mPaint = Paint()
         mPaint!!.style = Paint.Style.FILL_AND_STROKE
-        mPaint!!.setColor(Color.WHITE)
-        setBackgroundColor(Color.TRANSPARENT)
+        checkNightMode()
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
+    private fun checkNightMode() {
+        val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        when (nightModeFlags) {
+            Configuration.UI_MODE_NIGHT_YES -> mPaint!!.color = ContextCompat.getColor(context, R.color.md_theme_dark_onPrimary)
+            Configuration.UI_MODE_NIGHT_NO -> mPaint!!.color = ContextCompat.getColor(context, R.color.md_theme_light_onPrimary)
+            else -> mPaint!!.color = ContextCompat.getColor(context, R.color.md_theme_light_onTertiaryContainer)
+        }
+        setBackgroundColor(Color.TRANSPARENT)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-
         mNavigationBarWidth = width
         mNavigationBarHeight = height
-        mFirstCurveStartPoint[mNavigationBarWidth / 2 - CURVE_CIRCLE_RADIUS * 2 - CURVE_CIRCLE_RADIUS / 3] =
-            0
-        mFirstCurveEndPoint[mNavigationBarWidth / 2] = CURVE_CIRCLE_RADIUS + CURVE_CIRCLE_RADIUS / 4
+        mFirstCurveStartPoint.set((mNavigationBarWidth / 2 - CURVE_CIRCLE_RADIUS * 2 - CURVE_CIRCLE_RADIUS / 3), 0)
+        mFirstCurveEndPoint.set((mNavigationBarWidth / 2), CURVE_CIRCLE_RADIUS + CURVE_CIRCLE_RADIUS / 4)
         mSecondCurveStartPoint = mFirstCurveEndPoint
-        mSecondCurveEndPoint[mNavigationBarWidth / 2 + CURVE_CIRCLE_RADIUS * 2 + CURVE_CIRCLE_RADIUS / 3] =
-            0
-        mFirstCurveControlPoint1[mFirstCurveStartPoint.x + CURVE_CIRCLE_RADIUS + CURVE_CIRCLE_RADIUS / 4] =
-            mFirstCurveStartPoint.y
-        mFirstCurveControlPoint2[mFirstCurveEndPoint.x - CURVE_CIRCLE_RADIUS * 2 + CURVE_CIRCLE_RADIUS] =
-            mFirstCurveEndPoint.y
-        mSecondCurveControlPoint1[mSecondCurveStartPoint.x + CURVE_CIRCLE_RADIUS * 2 - CURVE_CIRCLE_RADIUS] =
-            mSecondCurveStartPoint.y
-        mSecondCurveControlPoint2[mSecondCurveEndPoint.x - (CURVE_CIRCLE_RADIUS + CURVE_CIRCLE_RADIUS / 4)] =
-            mSecondCurveEndPoint.y
+        mSecondCurveEndPoint.set((mNavigationBarWidth / 2 + CURVE_CIRCLE_RADIUS * 2 + CURVE_CIRCLE_RADIUS / 3), 0)
+        mFirstCurveControlPoint1.set(mFirstCurveStartPoint.x + CURVE_CIRCLE_RADIUS + CURVE_CIRCLE_RADIUS / 4, mFirstCurveStartPoint.y)
+        mFirstCurveControlPoint2.set(mFirstCurveEndPoint.x - CURVE_CIRCLE_RADIUS * 2 + CURVE_CIRCLE_RADIUS, mFirstCurveEndPoint.y)
+        mSecondCurveControlPoint1.set(mSecondCurveStartPoint.x + CURVE_CIRCLE_RADIUS * 2 - CURVE_CIRCLE_RADIUS, mSecondCurveStartPoint.y)
+        mSecondCurveControlPoint2.set(mSecondCurveEndPoint.x - (CURVE_CIRCLE_RADIUS + CURVE_CIRCLE_RADIUS / 4), mSecondCurveEndPoint.y)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -99,5 +88,13 @@ class CustomNavBottom : BottomNavigationView {
         mPath!!.lineTo(0f, mNavigationBarHeight.toFloat())
         mPath!!.close()
         canvas.drawPath(mPath!!, mPaint!!)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        if (newConfig != null) {
+            checkNightMode()
+            invalidate()
+        }
     }
 }

@@ -17,14 +17,13 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView2"
-            style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_left_arrow"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="40dp"
-
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/md_theme_dark_inversePrimary"
             >
 
             <TextView
@@ -32,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textColor="@color/md_theme_light_onPrimary"
                 android:text="@string/healt_wise" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -60,10 +60,11 @@
         <TextView
             android:id="@+id/tv_desc"
             style="@style/DescriptionStyleBig"
-            android:layout_width="180dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/cari_tau_jenis_kanker_melalui_kamera"
             app:layout_constraintStart_toStartOf="@+id/materialCardView2"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView2" />
@@ -93,7 +94,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:paddingBottom="60dp"
+            android:paddingBottom="120dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view"

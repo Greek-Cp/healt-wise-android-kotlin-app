@@ -1,6 +1,7 @@
 package com.dicoding.asclepius.view.home.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,22 +20,17 @@ class HealthNewsViewModel : ViewModel() {
         return articles
     }
 
-    fun fetchArticles() {
-         NetworkService.apiService.getTopHealthNews("id","health",BuildConfig.API_KEY).enqueue(object : Callback<ResponseHealtModel> {
+    fun fetchArticles(country: String, category: String) {
+         NetworkService.apiService.getTopHealthNews(country,"${category}",BuildConfig.API_KEY).enqueue(object : Callback<ResponseHealtModel> {
             override fun onResponse(call: Call<ResponseHealtModel>, response: Response<ResponseHealtModel>) {
 
                 if (response.isSuccessful) {
-                    // Filter out null articles before posting to LiveData
                     val articlesResponse = response.body()?.articles?.filterNotNull()
-                    articles.postValue(articlesResponse ?: emptyList())  // Post an empty list if articlesResponse is null
-                } else {
-                    // Log or handle error response
-
+                    articles.postValue(articlesResponse ?: emptyList())
                 }
             }
 
             override fun onFailure(call: Call<ResponseHealtModel>, t: Throwable) {
-                Log.e("Load Gagal","error ${t.message}");
             }
          })
     }

@@ -7,14 +7,14 @@
     <string name="result">Hasil Analisis</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="healt_wise">Healt Wise</string>
-    <string name="cari_tau_jenis_kanker_melalui_kamera">Cari tau jenis kanker melalui kamera</string>
+    <string name="healt_wise">Health Wise</string>
+    <string name="cari_tau_jenis_kanker_melalui_kamera">Deteksi Dini Kanker Kulit, Mulai Sekarang Lewat Ponsel Anda!</string>
     <string name="riwayat_scan">Riwayat Scan</string>
     <string name="refferensi">Refferensi</string>
     <string name="penjelasan">Penjelasan</string>
     <string name="berita_kesehatan">Berita Kesehatan\n</string>
     <string name="home_user">Home\n</string>
     <string name="avatar">loading\n</string>
-    <string name="yuk_cari_berita_terkait_kesehatan">Yuk cari berita terkait kesehatan</string>
+    <string name="yuk_cari_berita_terkait_kesehatan">Yuk Cari Berita Terkait Kesehatan</string>
     <string name="berita_kesehatan_header">Berita Kesehatan</string>
 </resources>

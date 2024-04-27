@@ -14,7 +14,6 @@ object NetworkService {
             chain.proceed(newRequest)
         })
         .build()
-
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(com.dicoding.asclepius.BuildConfig.URL_WEB)
         .client(client)

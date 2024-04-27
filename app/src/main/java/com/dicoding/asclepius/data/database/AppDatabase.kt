@@ -10,7 +10,6 @@ import com.dicoding.asclepius.data.model.PredictionModel
 @Database(entities = [PredictionModel::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun predictionDao(): PredictionDao
-
     companion object {
         @Volatile private var instance: AppDatabase? = null
 
@@ -18,9 +17,8 @@ abstract class AppDatabase : RoomDatabase() {
             instance ?: synchronized(this) {
                 instance ?: buildDatabase(context).also { instance = it }
             }
-
         private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(context, AppDatabase::class.java, "app_database.db")
+            Room.databaseBuilder(context, AppDatabase::class.java, "health_wise.db")
                 .fallbackToDestructiveMigration()
                 .build()
     }

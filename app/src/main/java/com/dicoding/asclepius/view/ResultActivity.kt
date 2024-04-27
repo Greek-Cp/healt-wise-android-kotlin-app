@@ -1,34 +1,23 @@
 package com.dicoding.asclepius.view
 
-import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import android.os.Build.VERSION.SDK_INT
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.data.database.AppDatabase
-import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.dicoding.asclepius.databinding.ActivityResultBinding
 import com.dicoding.asclepius.view.home.adapter.AdapterBeritaKesehatan
 import com.dicoding.asclepius.view.home.viewmodel.HealthNewsViewModel
 import com.dicoding.asclepius.view.util.ImageUtils
+import com.dicoding.asclepius.view.util.openWebPage
+import com.dicoding.asclepius.view.util.parcelable
 
-inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
-    SDK_INT >= 34 -> getParcelableExtra(key, T::class.java)
-    else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
-}
 
-inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
-    SDK_INT >= 34 -> getParcelable(key, T::class.java)
-    else -> @Suppress("DEPRECATION") getParcelable(key) as? T
-}
 class ResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultBinding
     private lateinit var database: AppDatabase
@@ -37,43 +26,36 @@ class ResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
         database = AppDatabase.getDatabase(this)
-
         // TODO: Menampilkan hasil gambar, prediksi, dan confidence score.
         displayImageAndResults()
-
+        viewModel = ViewModelProvider(this).get(HealthNewsViewModel::class.java)
         binding!!.idRecRefferensi.layoutManager = LinearLayoutManager(applicationContext)
         adapter = AdapterBeritaKesehatan(emptyList(), onItemClick = this::onItemClick)
         binding!!.idRecRefferensi.adapter = adapter
         viewModel.articles.observe(this, Observer { articles ->
-            Toast.makeText(this, "Data loaded: ${articles.size}", Toast.LENGTH_SHORT).show()
-            adapter.updateData(articles) // Pastikan adapter Anda memiliki metode untuk mengupdate datanya
+            adapter.updateData(articles)
         })
-        viewModel.fetchArticles()
+        binding!!.idBackBtnDetail.setOnClickListener { finish() }
+        viewModel.fetchArticles("id","health")
 
     }
-    private fun onItemClick(s: String) {
-
+    private fun onItemClick(url: String) {
+        openWebPage(applicationContext,url)
     }
 
 
     private fun displayImageAndResults() {
-        // Retrieve the URI and display it in the ImageView
         val imageUri: Uri? = intent.parcelable("ImageUri")
         val fromPage: String? = intent.getStringExtra("fromPage")?.toString();
         val predictionId = intent.getIntExtra("prediction_id", 0)
         if(fromPage == "PageAnalyze"){
-
                 imageUri?.let {
                     binding.resultImage.setImageURI(it)
                 } ?: Toast.makeText(this, "No Image Found", Toast.LENGTH_SHORT).show()
-
-                // Retrieve the prediction results and confidence scores
                 val predictions: String? = intent.getStringExtra("PredictionResults")
                 val confidence: Double? = intent.getDoubleExtra("ConfidenceScores",0.0);
-                // Update the TextView with the prediction results and confidence scores
                 binding.resultText.text = "Results: $predictions\nConfidence: ${confidence.toString()}"
                 setCardColorBasedOnPrediction(predictions)
                 setExplanationBasedOnConfidence(confidence!!,predictions)
@@ -81,17 +63,13 @@ class ResultActivity : AppCompatActivity() {
 
         } else{
             database.predictionDao().getPredictionById(predictionId).observe(this, { prediction ->
-                // Update other UI elements as needed
                     val bitmapImage = ImageUtils.byteArrayToBitmap(prediction.imagePrediction!!)
                     binding.resultImage.setImageBitmap(bitmapImage)
-                // Retrieve the prediction results and confidence scores
                 val predictions: String? = prediction.predictionResults
                 val confidence: Double? = prediction.confidenceScores
-                // Update the TextView with the prediction results and confidence scores
                 binding.resultText.text = "Results: $predictions\nConfidence: ${confidence.toString()}"
                 setCardColorBasedOnPrediction(predictions)
                 setExplanationBasedOnConfidence(confidence!!,predictions)
-
             })
 
         }
@@ -99,11 +77,10 @@ class ResultActivity : AppCompatActivity() {
     }
     private fun setCardColorBasedOnPrediction(predictions: String?) {
         val colorRes = if (predictions?.equals("Cancer", ignoreCase = true) == true) {
-            R.color.colorForCancer // Define this color in your colors.xml as #C32BA2
+            R.color.colorForCancer
         } else {
-            R.color.colorForNonCancer // Define this color in your colors.xml as #2bc3a7
+            R.color.colorForNonCancer
         }
-        binding.tvDescPenjelasan.text = "penjelasan"
         binding.materialCardWrapResultText.setCardBackgroundColor(ContextCompat.getColor(this, colorRes))
     }
     private fun setExplanationBasedOnConfidence(confidenceScore: Double, predictions: String?) {
@@ -187,7 +164,6 @@ class ResultActivity : AppCompatActivity() {
 
                  else -> {}
              }
-
              binding.tvDescPenjelasan.text = explanations.toString();
 
          }

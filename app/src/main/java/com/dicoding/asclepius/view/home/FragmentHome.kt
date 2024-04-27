@@ -3,24 +3,21 @@ package com.dicoding.asclepius.view.home
 import SettingAppPreferences
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import com.dicoding.asclepius.R
-import dataStore
-import kotlinx.coroutines.launch
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.asclepius.R
 import com.dicoding.asclepius.data.database.AppDatabase
-import com.dicoding.asclepius.data.model.PredictionModel
 import com.dicoding.asclepius.databinding.FragmentHomeBinding
 import com.dicoding.asclepius.view.ResultActivity
 import com.dicoding.asclepius.view.home.adapter.AdapterRiwayatScan
+import dataStore
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,7 +67,6 @@ class FragmentHome : Fragment() {
             adapter.notifyDataSetChanged()
         })
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,14 +82,13 @@ class FragmentHome : Fragment() {
         intent.putExtra("fromPage","main")
         intent.putExtra("prediction_id",predictionId.toInt());
         startActivity(intent)
-        Toast.makeText(requireContext(), predictionId, Toast.LENGTH_SHORT).show()
+
 
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = AdapterRiwayatScan(emptyList(), this::onItemClick)
         _binding!!.idRecUser.adapter = adapter
-
         _binding!!.idRecUser.layoutManager = LinearLayoutManager(activity)
 
     }

@@ -21,7 +21,7 @@
             android:background="?attr/selectableItemBackground"
             android:id="@+id/id_back_btn_detail"
             android:layout_marginLeft="@dimen/margin_left_arrow"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/penjelasan"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="@+id/result_image"
             app:layout_constraintTop_toBottomOf="@+id/materialCardWrapResultText" />
 
@@ -74,7 +74,7 @@
             style="@style/DescriptionStyleBig"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="@string/cari_tau_jenis_kanker_melalui_kamera"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_riwayat_scan"
@@ -108,7 +108,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:text="@string/cari_tau_jenis_kanker_melalui_kamera"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -128,6 +128,7 @@
             app:layout_constraintTop_toBottomOf="@+id/result_image">
 
             <TextView
+                style="@style/HeaderStyle"
                 android:id="@+id/result_text"
                 android:textColor="@color/colorForCancerLight"
                 android:layout_width="match_parent"

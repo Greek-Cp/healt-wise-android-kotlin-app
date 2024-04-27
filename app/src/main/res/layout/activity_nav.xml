@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/nav_bottom_items"
-        app:itemIconSize="30dp"
+        app:itemIconSize="35dp"
         app:itemActiveIndicatorStyle="?colorPrimary"
         app:itemRippleColor="?colorPrimary"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -36,7 +36,7 @@
         app:fabCustomSize="60dp"
         app:shapeAppearance="?shapeAppearanceCornerExtraLarge"
         app:layout_anchorGravity="center_horizontal"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="60dp"
         app:layout_anchor="@id/id_nav_main"
         android:layout_centerHorizontal="true"
         app:maxImageSize="60dp"
