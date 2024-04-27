@@ -9,6 +9,8 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        buildConfigField("String","API_KEY","\"c1ff6102501c4f98b11ccb4577eec7e5\"")
+        buildConfigField("String","URL_WEB","\"https://newsapi.org/v2/\"")
         applicationId = "com.dicoding.asclepius"
         minSdk = 24
         targetSdk = 34
@@ -37,11 +39,17 @@ android {
     buildFeatures {
         viewBinding = true
         mlModelBinding = true
+        buildConfig = true
+
     }
 }
 
 dependencies {
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     implementation ("org.tensorflow:tensorflow-lite:2.9.0")
     implementation ("org.tensorflow:tensorflow-lite-support:0.4.4")
     implementation ("org.tensorflow:tensorflow-lite-metadata:0.4.4")
