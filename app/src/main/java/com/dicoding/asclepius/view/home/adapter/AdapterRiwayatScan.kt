@@ -1,5 +1,7 @@
 package com.dicoding.asclepius.view.home.adapter
 
+import android.icu.text.SimpleDateFormat
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,12 @@ import com.dicoding.asclepius.data.model.PredictionModel
 import com.dicoding.asclepius.view.util.ImageUtils
 import com.google.android.material.card.MaterialCardView
 
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.time.LocalDateTime
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class AdapterRiwayatScan(private var predictions: List<PredictionModel>, private val onItemClick: (String) -> Unit) : RecyclerView.Adapter<AdapterRiwayatScan.ViewHolder>() {
     private fun setCardColorBasedOnPrediction(predictions: String?, itemView: View) {
@@ -123,7 +131,7 @@ class AdapterRiwayatScan(private var predictions: List<PredictionModel>, private
             val imageView = itemView.findViewById<ImageView>(R.id.id_img_scan)
             imageView.setImageBitmap(ImageUtils.byteArrayToBitmap(item.imagePrediction!!))
             val tv_waktu = itemView.findViewById<TextView>(R.id.id_tv_waktu);
-            tv_waktu.setText(item.timestamp)
+            setFormattedTimestamp(tv_waktu, timestamp = item.timestamp)
             itemView.setOnClickListener {
                 if (selectedPosition != adapterPosition) {
                     notifyItemChanged(selectedPosition)
@@ -132,6 +140,31 @@ class AdapterRiwayatScan(private var predictions: List<PredictionModel>, private
                 }
             }
         }
+    }
+    fun setFormattedTimestamp(tv_waktu: TextView, timestamp: String) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val date = dateFormat.parse(timestamp) ?: return
+
+        val calendar = Calendar.getInstance()
+        val today = Calendar.getInstance()
+        val yesterday = Calendar.getInstance().apply { add(Calendar.DATE, -1) }
+
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val dateTimeFormat = SimpleDateFormat("dd MMM, EEEE, HH:mm", Locale.getDefault())
+
+        val formattedDate = when {
+            isSameDay(calendar, today, date) -> "Today, ${timeFormat.format(date)}"
+            isSameDay(calendar, yesterday, date) -> "Yesterday, ${timeFormat.format(date)}"
+            else -> dateTimeFormat.format(date)
+        }
+
+        tv_waktu.text = formattedDate
+    }
+
+    fun isSameDay(calendar: Calendar, comparisonCalendar: Calendar, date: Date): Boolean {
+        calendar.time = date
+        return calendar.get(Calendar.YEAR) == comparisonCalendar.get(Calendar.YEAR) &&
+                calendar.get(Calendar.DAY_OF_YEAR) == comparisonCalendar.get(Calendar.DAY_OF_YEAR)
     }
     var selectedPosition = RecyclerView.NO_POSITION
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
